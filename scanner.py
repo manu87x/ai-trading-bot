@@ -211,7 +211,9 @@ while True:
                 # ====================================
 
                 if score >= 7:
-
+                    
+                    print("TRYING TELEGRAM...")
+                    
                     telegram_message = f"""
 🚀 STRONG BUY SIGNAL
 
