@@ -194,7 +194,7 @@ while True:
                 # ALERT
                 # =========================
 
-                if score >= 9:
+                if score >= 7:
 
                     telegram_message = f"""
 🚀 STRONG BUY SIGNAL
