@@ -210,7 +210,7 @@ while True:
                 # ALERT
                 # ====================================
 
-                if score >= 7:
+                if score >= 9:
                     
                     print("TRYING TELEGRAM...")
                     
