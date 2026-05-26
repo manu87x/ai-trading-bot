@@ -53,7 +53,9 @@ def send_telegram(message):
         "text": message
     }
 
-    requests.post(url, json=payload)
+    response = requests.post(url, json=payload)
+
+    print(response.text)
 
 # ====================================
 # SENTIMENT
