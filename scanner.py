@@ -46,16 +46,30 @@ TICKERS = [
 
 def send_telegram(message):
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    try:
 
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": message
-    }
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
 
-    response = requests.post(url, json=payload)
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message
+        }
 
-    print(response.text)
+        response = requests.post(
+            url,
+            json=payload,
+            timeout=10
+        )
+
+        print("TELEGRAM STATUS:")
+        print(response.status_code)
+
+        print("TELEGRAM RESPONSE:")
+        print(response.text)
+
+    except Exception as e:
+
+        print(f"TELEGRAM ERROR: {e}")
 
 # ====================================
 # SENTIMENT
@@ -99,16 +113,16 @@ while True:
                     print(f"{ticker}: Not enough data")
                     continue
 
-                # =========================
+                # ====================================
                 # MOVING AVERAGES
-                # =========================
+                # ====================================
 
                 df["SMA20"] = df["Close"].rolling(20).mean()
                 df["SMA50"] = df["Close"].rolling(50).mean()
 
-                # =========================
+                # ====================================
                 # RSI
-                # =========================
+                # ====================================
 
                 delta = df["Close"].diff()
 
@@ -126,25 +140,25 @@ while True:
 
                 trend = "BULLISH" if last["SMA20"] > last["SMA50"] else "BEARISH"
 
-                # =========================
+                # ====================================
                 # VOLUME
-                # =========================
+                # ====================================
 
                 volume_avg = df["Volume"].rolling(20).mean().iloc[-1]
 
                 volume_spike = last["Volume"] > volume_avg * 2
 
-                # =========================
+                # ====================================
                 # BREAKOUT
-                # =========================
+                # ====================================
 
                 recent_high = df["Close"].rolling(20).max().iloc[-2]
 
                 breakout = last["Close"] > recent_high
 
-                # =========================
+                # ====================================
                 # NEWS SENTIMENT
-                # =========================
+                # ====================================
 
                 sentiment = "NEUTRAL"
 
@@ -157,7 +171,9 @@ while True:
                         headlines = []
 
                         for n in news[:5]:
-                            headlines.append(n["title"])
+
+                            if "title" in n:
+                                headlines.append(n["title"])
 
                         combined = " ".join(headlines)
 
@@ -167,9 +183,9 @@ while True:
 
                     print(f"News error on {ticker}: {news_error}")
 
-                # =========================
+                # ====================================
                 # AI SCORE
-                # =========================
+                # ====================================
 
                 score = 0
 
@@ -190,9 +206,9 @@ while True:
 
                 print(f"{ticker} score: {score}")
 
-                # =========================
+                # ====================================
                 # ALERT
-                # =========================
+                # ====================================
 
                 if score >= 7:
 
