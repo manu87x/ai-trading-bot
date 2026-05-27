@@ -97,7 +97,9 @@ while True:
     try:
         
         current_hour = datetime.now().hour
-
+        
+        print(f"Current hour: {current_hour}")
+        
         if current_hour < 15 or current_hour >= 22:
 
             print("Market closed")
