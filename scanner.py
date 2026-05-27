@@ -275,8 +275,8 @@ AI Score: {score}
 
                 print(f"ERROR on {ticker}: {e}")
 
-        print("Waiting 5 minutes...")
-        time.sleep(300)
+        print("Waiting 15 minutes...")
+        time.sleep(900)
 
     except Exception as main_error:
 
