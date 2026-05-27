@@ -7,7 +7,7 @@ import time
 # TELEGRAM CONFIG
 # ====================================
 
-TELEGRAM_BOT_TOKEN = "8805383327:AAEnXgJl9d70ly8SMyPFWZPioJspaAb2bWs"
+TELEGRAM_BOT_TOKEN = "8805383327:AAG1yWdfHgP-pEFeKhBqmbIAeinJxb_cXgk"
 TELEGRAM_CHAT_ID = "612977869"
 
 # ====================================
