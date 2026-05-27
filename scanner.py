@@ -3,6 +3,7 @@ from textblob import TextBlob
 import requests
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # ====================================
 # TELEGRAM CONFIG
@@ -96,7 +97,9 @@ while True:
 
     try:
         
-        current_hour = datetime.now().hour + 2
+        current_hour = datetime.now(
+            ZoneInfo("Europe/Rome")
+        ).hour
         
         print(f"Current hour: {current_hour}")
         
@@ -159,15 +162,20 @@ while True:
 
                 volume_avg = df["Volume"].rolling(20).mean().iloc[-1]
 
-                volume_spike = last["Volume"] > volume_avg * 2
+                volume_spike = last["Volume"] > volume_avg * 1.3
 
                 # ====================================
-                # BREAKOUT
+                # PULLBACK ANALYSIS
                 # ====================================
 
                 recent_high = df["Close"].rolling(20).max().iloc[-2]
 
-                breakout = last["Close"] > recent_high
+                pullback = last["Close"] < recent_high * 0.97
+
+                distance_from_high = round(
+                    ((recent_high - last["Close"]) / recent_high) * 100,
+                    2
+                )
 
                 # ====================================
                 # NEWS SENTIMENT
@@ -203,7 +211,7 @@ while True:
                 score = 0
 
                 if trend == "BULLISH":
-                    score += 5
+                    score += 4
 
                 if volume_spike:
                     score += 4
@@ -211,11 +219,11 @@ while True:
                 if sentiment == "POSITIVE":
                     score += 3
 
-                if breakout:
-                    score += 2
+                if pullback:
+                    score += 3
 
-                if 55 < rsi < 70:
-                    score += 2
+                if 40 < rsi < 55:
+                    score += 3
 
                 print(f"{ticker} score: {score}")
 
@@ -234,7 +242,8 @@ Ticker: {ticker}
 Price: ${round(last['Close'], 2)}
 Trend: {trend}
 RSI: {rsi}
-Breakout: {breakout}
+Pullback: {pullback}
+Distance From High: {distance_from_high}%
 News: {sentiment}
 AI Score: {score}
 """
