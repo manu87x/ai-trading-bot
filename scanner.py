@@ -115,6 +115,22 @@ while True:
         print("Scanning market...")
         print("===================================")
 
+        # ====================================
+        # MARKET TREND
+        # ====================================
+
+        spy = yf.Ticker("SPY")
+        spy_df = spy.history(period="3mo")
+
+        spy_df["SMA20"] = spy_df["Close"].rolling(20).mean()
+        spy_df["SMA50"] = spy_df["Close"].rolling(50).mean()
+
+        spy_last = spy_df.iloc[-1]
+
+        market_bullish = spy_last["SMA20"] > spy_last["SMA50"]
+
+        print(f"Market bullish: {market_bullish}")
+        
         for ticker in TICKERS:
 
             try:
@@ -212,7 +228,10 @@ while True:
 
                 if trend == "BULLISH":
                     score += 4
-
+                
+                if market_bullish:
+                    score += 2
+                
                 if volume_spike:
                     score += 4
 
