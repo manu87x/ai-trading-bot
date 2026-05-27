@@ -2,6 +2,7 @@ import yfinance as yf
 from textblob import TextBlob
 import requests
 import time
+from datetime import datetime
 
 # ====================================
 # TELEGRAM CONFIG
@@ -94,7 +95,17 @@ def analyze_sentiment(text):
 while True:
 
     try:
+        
+        current_hour = datetime.now().hour
 
+        if current_hour < 15 or current_hour >= 22:
+
+            print("Market closed")
+
+            time.sleep(1800)
+
+            continue
+        
         print("===================================")
         print("Scanning market...")
         print("===================================")
@@ -102,7 +113,7 @@ while True:
         for ticker in TICKERS:
 
             try:
-
+               
                 print(f"Checking {ticker}...")
 
                 stock = yf.Ticker(ticker)
