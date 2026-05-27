@@ -250,7 +250,7 @@ while True:
                 # ALERT
                 # ====================================
 
-                if score >= 9:
+                if score >= 9 and volume_spike:
                     
                     print("TRYING TELEGRAM...")
                     
