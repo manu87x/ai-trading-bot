@@ -96,7 +96,7 @@ while True:
 
     try:
         
-        current_hour = datetime.now().hour
+        current_hour = datetime.utcnow().hour + 2
         
         print(f"Current hour: {current_hour}")
         
