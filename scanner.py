@@ -188,7 +188,7 @@ while True:
 
                 volume_avg = df["Volume"].rolling(20).mean().iloc[-1]
 
-                volume_spike = last["Volume"] > volume_avg * 1.3
+                volume_spike = last["Volume"] > volume_avg * 1.15
 
                 # ====================================
                 # PULLBACK ANALYSIS
