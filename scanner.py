@@ -250,10 +250,16 @@ while True:
 
                 if pullback:
                     score += 3
+                
+                else:
+                    score -= 2
 
                 if 40 < rsi < 55:
                     score += 3
-
+                
+                if rsi > 65:
+                    score -= 3
+                
                 print(f"{ticker} score: {score}")
 
                 # ====================================
