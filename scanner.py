@@ -18,6 +18,16 @@ TELEGRAM_CHAT_ID = "612977869"
 
 TICKERS = [
     "AAPL",
+    "KO",
+    "PEP",
+    "COST",
+    "WMT",
+    "MCD",
+    "JPM",
+    "V",
+    "JNJ",
+    "CAT",
+    "HD",
     "MSFT",
     "NVDA",
     "TSLA",
