@@ -107,13 +107,27 @@ while True:
 
     try:
         
-        current_hour = datetime.now(
+        now = datetime.now(
             ZoneInfo("Europe/Rome")
-        ).hour
+        )
+
+        current_hour = now.hour
+        
+        if now.weekday() >= 5:
+
+            print("Weekend - Market closed")
+
+            time.sleep(3600)
+
+            continue
         
         print(f"Current hour: {current_hour}")
         
-        if current_hour < 15 or current_hour >= 22:
+        if (
+            current_hour < 15
+            or (current_hour == 15 and now.minute < 30)
+            or current_hour >= 22
+        ):
 
             print("Market closed")
 
