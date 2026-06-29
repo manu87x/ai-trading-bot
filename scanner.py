@@ -196,6 +196,11 @@ while True:
 
                 trend = "BULLISH" if last["SMA20"] > last["SMA50"] else "BEARISH"
 
+                today_close = df["Close"].iloc[-1]
+                yesterday_close = df["Close"].iloc[-2]
+
+                reversal = today_close > yesterday_close
+                
                 # ====================================
                 # VOLUME
                 # ====================================
@@ -217,6 +222,12 @@ while True:
                     2
                 )
 
+                # Penalizza pullback troppo profondi
+                if distance_from_high > 30:
+                    deep_pullback = True
+                else:
+                    deep_pullback = False
+                
                 # ====================================
                 # NEWS SENTIMENT
                 # ====================================
@@ -250,37 +261,56 @@ while True:
 
                 score = 0
 
+                # Trend principale
                 if trend == "BULLISH":
-                    score += 4
-                
+                  score += 4
+
+                # Mercato generale
                 if market_bullish:
-                    score += 2
-                
+                  score += 2
+
+                # Volume
                 if volume_spike:
-                    score += 4
+                  score += 4
 
+                # Sentiment
                 if sentiment == "POSITIVE":
-                    score += 3
+                  score += 3
 
+                # Pullback
                 if pullback:
-                    score += 3
-                
+                  score += 3
                 else:
-                    score -= 2
+                  score -= 2
 
-                if 40 < rsi < 55:
+                # RSI
+                if rsi < 30:
+                  score += 5
+
+                elif rsi < 40:
                     score += 3
-                
-                if rsi > 65:
+
+                elif rsi < 55:
+                    score += 2
+
+                elif rsi > 65:
                     score -= 3
-                
+
+                # Primo segnale di inversione
+                if reversal:
+                  score += 3
+
+                # Penalità se il titolo è crollato troppo
+                if deep_pullback:
+                  score -= 3
+
                 print(f"{ticker} score: {score}")
 
                 # ====================================
                 # ALERT
                 # ====================================
 
-                if score >= 9 and volume_spike:
+                if score >= 13:
                     
                     print("TRYING TELEGRAM...")
                     
@@ -292,6 +322,8 @@ Price: ${round(last['Close'], 2)}
 Trend: {trend}
 RSI: {rsi}
 Pullback: {pullback}
+Reversal: {reversal}
+Volume Spike: {volume_spike}
 Distance From High: {distance_from_high}%
 News: {sentiment}
 AI Score: {score}
