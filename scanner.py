@@ -316,7 +316,11 @@ while True:
                   score -= 3
 
                 print(f"{ticker} score: {score}")
-
+               
+                # Scarta tutti i titoli ancora in trend ribassista
+                if trend != "BULLISH":
+                    continue
+                
                 # ====================================
                 # ALERT
                 # ====================================
