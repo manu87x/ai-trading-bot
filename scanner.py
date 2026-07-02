@@ -181,6 +181,9 @@ while True:
                 df["SMA20"] = df["Close"].rolling(20).mean()
                 df["SMA50"] = df["Close"].rolling(50).mean()
 
+                df["EMA20"] = df["Close"].ewm(span=20, adjust=False).mean()
+                df["EMA50"] = df["Close"].ewm(span=50, adjust=False).mean()
+                
                 # ====================================
                 # RSI
                 # ====================================
@@ -199,12 +202,15 @@ while True:
 
                 rsi = round(last["RSI"], 2)
 
-                trend = "BULLISH" if last["SMA20"] > last["SMA50"] else "BEARISH"
+                trend = "BULLISH" if last["EMA20"] > last["EMA50"] else "BEARISH"
 
                 today_close = df["Close"].iloc[-1]
                 yesterday_close = df["Close"].iloc[-2]
 
-                reversal = today_close > yesterday_close
+                reversal = (
+                    today_close > yesterday_close
+                    and today_close > last["EMA20"]
+                )
                 
                 # ====================================
                 # VOLUME
@@ -315,7 +321,7 @@ while True:
                 # ALERT
                 # ====================================
 
-                if score >= 13:
+                if score >= 13 and trend == "BULLISH":
                     
                     print("TRYING TELEGRAM...")
                     
