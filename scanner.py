@@ -312,7 +312,12 @@ while True:
                 if deep_pullback:
                   score -= 3
 
-                print(f"{ticker} score: {score}")
+                print(
+                    f"{ticker} | Trend={trend} | Market={market_bullish} | "
+                    f"RSI={rsi} | Pullback={pullback} | Reversal={reversal} | "
+                    f"Volume={volume_spike} | DeepPullback={deep_pullback} | Score={score}"
+                )
+            
                
                 # Scarta tutti i titoli ancora in trend ribassista
                 if trend != "BULLISH":
@@ -322,7 +327,7 @@ while True:
                 # ALERT
                 # ====================================
 
-                if score >= 13 and trend == "BULLISH":
+                if score >= 13:
                     
                     print("TRYING TELEGRAM...")
                     
