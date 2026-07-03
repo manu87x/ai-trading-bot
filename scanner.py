@@ -151,12 +151,12 @@ while True:
         spy = yf.Ticker("SPY")
         spy_df = spy.history(period="3mo")
 
-        spy_df["SMA20"] = spy_df["Close"].rolling(20).mean()
-        spy_df["SMA50"] = spy_df["Close"].rolling(50).mean()
+        spy_df["EMA20"] = spy_df["Close"].ewm(span=20, adjust=False).mean()
+        spy_df["EMA50"] = spy_df["Close"].ewm(span=50, adjust=False).mean()
 
         spy_last = spy_df.iloc[-1]
 
-        market_bullish = spy_last["SMA20"] > spy_last["SMA50"]
+        market_bullish = spy_last["EMA20"] > spy_last["EMA50"]
 
         print(f"Market bullish: {market_bullish}")
         
