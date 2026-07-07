@@ -8,8 +8,8 @@ import yfinance as yf
 from textblob import TextBlob
 
 
-TELEGRAM_BOT_TOKEN = os.getenv("8805383327:AAG1yWdfHgP-pEFeKhBqmbIAeinJxb_cXgk")
-TELEGRAM_CHAT_ID = os.getenv("612977869")
+TELEGRAM_BOT_TOKEN = "8805383327:AAG1yWdfHgP-pEFeKhBqmbIAeinJxb_cXgk"
+TELEGRAM_CHAT_ID = "612977869"
 
 
 TICKERS = [
